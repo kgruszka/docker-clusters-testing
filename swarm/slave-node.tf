@@ -9,23 +9,37 @@ resource "aws_instance" "slave" {
         "${var.sg_id}"
     ]
 
+    depends_on = [
+        "aws_instance.master"
+    ]
+}
+
+resource "null_resource" "provision-slave-node" {
+    # Changes to any instance of the cluster requires re-provisioning
+    triggers {
+        cluster_instance_ids = "${join(",", aws_instance.slave.*.id)}"
+    }
+    count = "${var.slave_node_count}"
+
     connection {
-        bastion_host = "${aws_eip.ip.0.public_ip}"
+        bastion_host = "${var.bastion_public_ip}"
         user = "${var.cluster_user}"
+        host = "${element(aws_instance.slave.*.private_ip, count.index)}"
         private_key = "${file("${var.cluster_private_key_path}")}"
+    }
+
+    provisioner "file" {
+        source      = "scripts/private_ip_to_hosts_file.sh"
+        destination = "/home/${var.cluster_user}/private_ip_to_hosts_file.sh"
     }
 
     provisioner "remote-exec" {
         inline = [
-            "sudo systemctl stop docker",
-            "sudo nohup dockerd -H 0.0.0.0:2375 -H unix:///var/run/docker.sock &",
-            "sudo docker swarm join ${aws_instance.master.private_ip} --token $(docker -H ${aws_instance.master.private_ip} swarm join-token -q worker)"
+            "sudo chmod +x /home/${var.cluster_user}/private_ip_to_hosts_file.sh",
+            "sudo /home/${var.cluster_user}/private_ip_to_hosts_file.sh '${element(aws_instance.slave.*.private_ip, count.index)}'",
+            "sudo docker swarm join ${aws_instance.master.0.private_ip}:2377 --token $(docker -H ${aws_instance.master.0.private_ip} swarm join-token -q worker)"
         ]
     }
-
-    depends_on = [
-        "aws_instance.master"
-    ]
 }
 
 output "slaves" {

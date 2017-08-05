@@ -15,3 +15,6 @@ variable "slave_node_instance_type" {}
 // subnets
 variable "vpc_id" {}
 variable "subnet_id" {}
+
+// bastion
+variable "bastion_public_ip" {}
