@@ -20,7 +20,7 @@
     },
     "instance_type": "t2.micro",
     "ssh_username": "{{user `host_user`}}",
-    "ami_name": "packer-example {{timestamp}}"
+    "ami_name": "docker-testing-{{timestamp}}"
   }],
   "provisioners": [{
     "type": "shell",
@@ -30,7 +30,9 @@
       "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
       "sudo apt-get update",
       "sudo apt-get install -y docker-ce",
-      "sudo usermod -aG docker \"{{user `host_user`}}\""
+      "sudo usermod -aG docker \"{{user `host_user`}}\"",
+      "sudo curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -",
+      "sudo apt-get install -y nodejs"
     ]
   }]
 }
