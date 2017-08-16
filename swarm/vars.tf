@@ -12,6 +12,9 @@ variable "cluster_user" {}
 variable "master_node_instance_type" {}
 variable "slave_node_instance_type" {}
 
+variable local_scripts_path {}
+variable local_test_dir_path {}
+
 // subnets
 variable "vpc_id" {}
 variable "subnet_id" {}

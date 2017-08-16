@@ -5,7 +5,7 @@ resource "aws_instance" "bastion" {
   key_name = "${aws_key_pair.ec2-key.key_name}"
 
   vpc_security_group_ids = [
-    "${aws_security_group.cluster.id}"
+    "${aws_security_group.bastion.id}"
   ]
 }
 
@@ -19,15 +19,28 @@ resource "aws_eip" "bastion" {
     private_key = "${file("${var.cluster_private_key_path}")}"
   }
 
+  // for debugging
   provisioner "file" {
-    source      = "scripts/private_ip_to_hosts_file.sh"
-    destination = "/home/${var.cluster_user}/private_ip_to_hosts_file.sh"
+    source = "ssh/docker-cluster",
+    destination = "/home/${var.cluster_user}/.ssh/docker-cluster"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "sudo chmod +x /home/${var.cluster_user}/private_ip_to_hosts_file.sh",
-      "sudo sh /home/${var.cluster_user}/private_ip_to_hosts_file.sh '${aws_instance.bastion.private_ip}'",
+      "sudo -u ${var.cluster_user} chmod 600 /home/${var.cluster_user}/.ssh/docker-cluster",
+      "sudo -u ${var.cluster_user} mkdir /home/${var.cluster_user}/scripts"
+    ]
+  }
+
+  provisioner "file" {
+    source      = "${var.local_scripts_path}/private_ip_to_hosts_file.sh"
+    destination = "/home/${var.cluster_user}/scripts/private_ip_to_hosts_file.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod +x /home/${var.cluster_user}/scripts/private_ip_to_hosts_file.sh",
+      "sudo sh /home/${var.cluster_user}/scripts/private_ip_to_hosts_file.sh '${aws_instance.bastion.private_ip}'",
     ]
   }
 }

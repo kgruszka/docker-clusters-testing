@@ -22,6 +22,11 @@ variable "slave_node_count" {}
 variable "master_node_instance_type" {}
 variable "slave_node_instance_type" {}
 
+variable local_scripts_path {}
+variable local_test_dir_path {
+  default = "tests/start_containers"
+}
+
 // bastion
 variable "bastion_instance_type" {}
 
@@ -34,3 +39,6 @@ variable "swarm_subnet_cidr_block_mask" {}
 
 variable kubernetes_subnet_cidr_block_mask {}
 variable kubernetes_subnet_cidr_block_base {}
+
+// mongo credentials
+variable mongo_url {}

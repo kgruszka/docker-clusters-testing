@@ -16,6 +16,9 @@ module "swarm" {
   master_node_instance_type = "${var.master_node_instance_type}"
   slave_node_instance_type = "${var.slave_node_instance_type}"
 
+  local_scripts_path = "${var.local_scripts_path}"
+  local_test_dir_path = "${var.local_test_dir_path}"
+
   // networking
   vpc_id = "${aws_vpc.clusters.id}"
   sg_id = "${aws_security_group.cluster.id}"
@@ -25,10 +28,18 @@ module "swarm" {
   bastion_public_ip = "${aws_eip.bastion.public_ip}"
 }
 
-output "master_private_ip" {
-  value = "${module.swarm.master_private_ip}"
+output "master_private_ips" {
+  value = "${module.swarm.master_private_ips}"
 }
 
-output "slave_ips" {
-  value = "${module.swarm.slaves}"
+output "master_public_ips" {
+  value = "${module.swarm.master_public_ips}"
+}
+
+output "slave_private_ips" {
+  value = "${module.swarm.slave_private_ips}"
+}
+
+output "slave_public_ips" {
+  value = "${module.swarm.slave_public_ips}"
 }
