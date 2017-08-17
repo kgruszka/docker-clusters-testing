@@ -21,3 +21,9 @@ variable "subnet_id" {}
 
 // bastion
 variable "bastion_public_ip" {}
+
+// storage
+variable storage_host {}
+variable storage_port {}
+variable storage_auth {}
+variable storage_path {}

@@ -40,5 +40,11 @@ variable "swarm_subnet_cidr_block_mask" {}
 variable kubernetes_subnet_cidr_block_mask {}
 variable kubernetes_subnet_cidr_block_base {}
 
-// mongo credentials
-variable mongo_url {}
+// storage
+variable storage_host {}
+
+variable storage_port {}
+
+variable storage_auth {}
+
+variable storage_path {}

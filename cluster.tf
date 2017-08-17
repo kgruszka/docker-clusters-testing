@@ -26,6 +26,12 @@ module "swarm" {
 
   // bastion
   bastion_public_ip = "${aws_eip.bastion.public_ip}"
+
+  // storage
+  storage_host = "${var.storage_host}"
+  storage_port = "${var.storage_port}"
+  storage_auth = "${var.storage_auth}"
+  storage_path = "${var.storage_path}"
 }
 
 output "master_private_ips" {
