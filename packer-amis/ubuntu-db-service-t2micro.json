@@ -20,7 +20,7 @@
     },
     "instance_type": "t2.micro",
     "ssh_username": "{{user `host_user`}}",
-    "ami_name": "docker-testing-{{timestamp}}"
+    "ami_name": "docker-testing-db-service-{{timestamp}}"
   }],
   "provisioners": [{
     "type": "shell",
