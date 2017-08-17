@@ -32,7 +32,8 @@
       "sudo apt-get install -y docker-ce",
       "sudo usermod -aG docker \"{{user `host_user`}}\"",
       "sudo curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -",
-      "sudo apt-get install -y nodejs"
+      "sudo apt-get install -y nodejs",
+      "npm install forever -g"
     ]
   }]
 }
