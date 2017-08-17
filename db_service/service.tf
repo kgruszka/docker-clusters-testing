@@ -1,5 +1,5 @@
 variable "docker_ami" {
-  default = "ami-d7fb57b8"
+  default = "ami-01c36b6e"
 }
 
 resource "aws_instance" "db_service" {
@@ -27,7 +27,6 @@ resource "aws_eip" "db_service" {
     inline = [
       "git clone https://github.com/SoftInstigate/restheart.git",
       "cd restheart/Docker",
-      "./build.sh",
       "docker-compose up -d"
     ]
   }
