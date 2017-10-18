@@ -18,3 +18,20 @@ Terraform creates all the infrastucture in AWS.
 - Bastion server - A server in the cluster subnet with public ip and ssh access
 - Supervisor - runs on bastion server, schedules and finishes the tests
 - Local agent - runs on cluster node, gathers the results and uploads them to MongoDB
+
+## Tests
+### Cluster size
+Each step is performed with 3 and 5 manager nodes
+
+Steps:
+- 5 worker nodes
+- 10 worker nodes
+- 20 worker nodes
+- 50 worker nodes
+
+### Starting containers
+Steps:
+- 5 containers per worker node
+- 10 containers per worker node
+- 20 containers per worker node
+- 50 containers per worker node
