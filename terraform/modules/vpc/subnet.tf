@@ -42,7 +42,11 @@ resource "aws_route_table_association" "cluster" {
 }
 
 output "cluster_subnet_id" {
-  depends_on = ["aws_route_table_association.cluster"]
+  depends_on = [
+    "aws_route_table_association.cluster",
+    "aws_internet_gateway.cluster",
+    "aws_route.cluster_egress_route"
+  ]
   value = "${aws_subnet.cluster.id}"
 }
 
@@ -52,6 +56,9 @@ output "cluster_subnet_cidr" {
 }
 
 output "cluster_route_table_id" {
-  depends_on = ["aws_route_table_association.cluster"]
+  depends_on = [
+    "aws_route_table_association.cluster",
+    "aws_route.cluster_egress_route"
+  ]
   value = "${aws_route_table.cluster.id}"
 }

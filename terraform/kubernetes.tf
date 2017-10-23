@@ -29,21 +29,21 @@ module "kubernetes" {
   local_scripts_path = "${var.local_scripts_path}"
 }
 
-module "kubectl" {
-  source = "modules/local_kubectl"
-  kubernetes_public_address = "${module.kubernetes.kubernetes_manager_public_ips[0]}"
-  tls_data_dir = "modules/kubernetes/tls/data"
-}
-
-module "bastion_kubectl" {
-  source = "modules/bastion_kubectl"
-
-  kubernetes_public_address = "${module.kubernetes.kubernetes_manager_public_ips[0]}"
-  bastion_public_ip = "${module.vpc.bastion_public_ip}"
-  bastion_user = "${var.cluster_user}"
-  bastion_private_key_path = "${var.cluster_private_key_path}"
-  tls_data_dir = "modules/kubernetes/tls/data"
-}
+//module "kubectl" {
+//  source = "modules/local_kubectl"
+//  kubernetes_public_address = "${module.kubernetes.kubernetes_manager_public_ips[0]}"
+//  tls_data_dir = "modules/kubernetes/tls/data"
+//}
+//
+//module "bastion_kubectl" {
+//  source = "modules/bastion_kubectl"
+//
+//  kubernetes_public_address = "${module.kubernetes.kubernetes_manager_public_ips[0]}"
+//  bastion_public_ip = "${module.vpc.bastion_public_ip}"
+//  bastion_user = "${var.cluster_user}"
+//  bastion_private_key_path = "${var.cluster_private_key_path}"
+//  tls_data_dir = "modules/kubernetes/tls/data/generated"
+//}
 
 output "kubernetes_manager_private_ips" {
   value = "${module.kubernetes.kubernetes_manager_private_ips}"

@@ -24,16 +24,7 @@ module "swarm" {
   vpc_cidr = "${module.vpc.vpc_cluster_cidr}"
   subnet_id = "${module.vpc.cluster_subnet_id}"
 
-  // storage
-  storage_host = "${module.db_service.public_ip}"
-  storage_port = "${var.storage_port}"
-  storage_auth = "${var.storage_auth}"
-  storage_path = "${var.storage_path}"
-
-  // test
-  test_script_dir = "${var.test_script_dir}"
   local_scripts_path = "${var.local_scripts_path}"
-  local_test_dir_path = "${var.local_test_dir_path}"
 
   containers_count = "${var.containers_count}"
 }

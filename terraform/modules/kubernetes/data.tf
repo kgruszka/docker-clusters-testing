@@ -1,5 +1,5 @@
 data "template_file" "etcd_init" {
-  template = "${file("${path.module}/data/etcd_init.tpl")}"
+  template = "${file("${path.module}/data/etcd_init.sh")}"
   count = "${var.manager_count}"
 
   vars {
@@ -11,7 +11,7 @@ data "template_file" "etcd_init" {
 }
 
 data "template_file" "k8s_manager_init" {
-  template = "${file("${path.module}/data/k8s_manager_init.tpl")}"
+  template = "${file("${path.module}/data/k8s_manager_init.sh")}"
   count = "${var.manager_count}"
 
   vars {
@@ -24,7 +24,7 @@ data "template_file" "k8s_manager_init" {
 
 data "template_file" "k8s_worker_init" {
   count = "${var.worker_count}"
-  template = "${file("${path.module}/data/k8s_worker_init.tpl")}"
+  template = "${file("${path.module}/data/k8s_worker_init.sh")}"
 
   vars {
     POD_CIDR = "${cidrsubnet(var.pod_cidr, 8, count.index)}"

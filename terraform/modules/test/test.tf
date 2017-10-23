@@ -25,7 +25,7 @@ resource "null_resource" "test" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo sh test/run.sh"
+      "sudo bash test/run.sh ${var.worker_machine_count}"
     ]
   }
 }

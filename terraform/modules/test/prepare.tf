@@ -22,7 +22,7 @@ resource "null_resource" "init_manager" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo sh init/init.sh"
+      "sudo bash init/init.sh"
     ]
   }
 }
@@ -53,7 +53,7 @@ resource "null_resource" "init_worker" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo sh init/init.sh"
+      "sudo bash init/init.sh"
     ]
   }
 }

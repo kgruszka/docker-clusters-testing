@@ -14,4 +14,6 @@ variable "cluster_private_key_path" {}
 
 variable "test_dir_path" {}
 
-variable "depends_on" {}
+variable "depends_on" {
+  type = "list"
+}
