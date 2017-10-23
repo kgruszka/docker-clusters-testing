@@ -10,7 +10,14 @@ module "tls" {
   worker_count = "${var.worker_count}"
 }
 
+resource "null_resource" "wait" {
+  provisioner "local-exec" {
+    command = "echo \"certificate generated: ${module.tls.certificate_generation}\""
+  }
+}
+
 resource "null_resource" "kubernetes_worker_tls" {
+  depends_on = ["null_resource.wait"]
   count = "${aws_instance.kubernetes_worker.count}"
 
   connection {
@@ -21,32 +28,33 @@ resource "null_resource" "kubernetes_worker_tls" {
   }
 
   provisioner "file" {
-    content = "${module.tls.kubernetes_worker_ca_pem}"
+    source = "${module.tls.kubernetes_worker_ca_pem}"
     destination = "/home/${var.cluster_user}/ca.pem"
   }
 
   provisioner "file" {
-    content = "${element(module.tls.kubernetes_worker_instance_key_pem, count.index)}"
+    source = "${element(module.tls.kubernetes_worker_instance_key_pem, count.index)}"
     destination = "/home/${var.cluster_user}/worker-${count.index}-key.pem"
   }
 
   provisioner "file" {
-    content = "${element(module.tls.kubernetes_worker_instance_pem, count.index)}"
+    source = "${element(module.tls.kubernetes_worker_instance_pem, count.index)}"
     destination = "/home/${var.cluster_user}/worker-${count.index}.pem"
   }
 
   provisioner "file" {
-    content = "${element(module.tls.kubernetes_worker_kubeconfig, count.index)}"
+    source = "${element(module.tls.kubernetes_worker_kubeconfig, count.index)}"
     destination = "/home/${var.cluster_user}/worker-${count.index}.kubeconfig"
   }
 
   provisioner "file" {
-    content = "${module.tls.kubernetes_kube_proxy_kubeconfig}"
+    source = "${module.tls.kubernetes_kube_proxy_kubeconfig}"
     destination = "/home/${var.cluster_user}/kube-proxy.kubeconfig"
   }
 }
 
 resource "null_resource" "kubernetes_manager_tls" {
+  depends_on = ["null_resource.wait"]
   count = "${aws_instance.kubernetes_manager.count}"
 
   connection {
@@ -57,22 +65,22 @@ resource "null_resource" "kubernetes_manager_tls" {
   }
 
   provisioner "file" {
-    content = "${module.tls.kubernetes_manager_ca_pem}"
+    source = "${module.tls.kubernetes_manager_ca_pem}"
     destination = "/home/${var.cluster_user}/ca.pem"
   }
 
   provisioner "file" {
-    content = "${module.tls.kubernetes_manager_ca_key_pem}"
+    source = "${module.tls.kubernetes_manager_ca_key_pem}"
     destination = "/home/${var.cluster_user}/ca-key.pem"
   }
 
   provisioner "file" {
-    content = "${module.tls.kubernetes_manager_kubernetes_key_pem}"
+    source = "${module.tls.kubernetes_manager_kubernetes_key_pem}"
     destination = "/home/${var.cluster_user}/kubernetes-key.pem"
   }
 
   provisioner "file" {
-    content = "${module.tls.kubernetes_manager_kubernetes_pem}"
+    source = "${module.tls.kubernetes_manager_kubernetes_pem}"
     destination = "/home/${var.cluster_user}/kubernetes.pem"
   }
 }

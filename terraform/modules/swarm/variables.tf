@@ -20,20 +20,6 @@ variable "subnet_id" {}
 // bastion
 variable "bastion_public_ip" {}
 
-// storage
-variable storage_host {}
-variable storage_port {
-  default = "8080"
-}
-variable storage_auth {
-  default = "YWRtaW46Y2hhbmdlaXQ="
-}
-variable storage_path {
-  default = "/tests/start-containers"
-}
-
 // test
-variable test_script_dir {}
 variable containers_count {}
 variable local_scripts_path {}
-variable local_test_dir_path {}

@@ -29,7 +29,7 @@ resource "null_resource" "kubernetes_manager" {
 
   provisioner "remote-exec" {
     inline = [
-      "mkdir /home/${var.cluster_user}/scripts"
+      "mkdir -p /home/${var.cluster_user}/scripts"
     ]
   }
 
@@ -49,8 +49,8 @@ resource "null_resource" "kubernetes_manager" {
 resource "null_resource" "control_plane" {
   depends_on = [
     "null_resource.kubernetes_manager",
-    "aws_elb.kubernetes_manager",
     "null_resource.kubernetes_manager_tls",
+    "aws_elb.kubernetes_manager",
     "null_resource.etcd",
   ]
   count = "${var.manager_count}"
@@ -99,5 +99,5 @@ output "kubernetes_manager_private_ips" {
 }
 
 output "kubernetes_managers_provisioned" {
-  value = "${null_resource.control_plane.id}"
+  value = "${null_resource.control_plane.*.id}"
 }

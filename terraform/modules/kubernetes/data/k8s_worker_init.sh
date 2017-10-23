@@ -91,8 +91,8 @@ ExecStart=/usr/local/bin/kubelet \\
   --client-ca-file=/var/lib/kubernetes/ca.pem \\
   --cluster-dns=$CLUSTER_DNS \\
   --cluster-domain=cluster.local \\
-  --container-runtime=remote \\
-  --container-runtime-endpoint=unix:///var/run/cri-containerd.sock \\
+  --container-runtime=docker \\
+  --container-runtime-endpoint=unix:///var/run/docker.sock \\
   --hostname-override=$WORKER_NAME \\
   --image-pull-progress-deadline=2m \\
   --kubeconfig=/var/lib/kubelet/kubeconfig \\
@@ -110,7 +110,8 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 EOF
-
+# unix:///var/run/cri-containerd.sock
+# remote
 # Configure the Kubernetes Proxy
 
 sudo mv kube-proxy.kubeconfig /var/lib/kube-proxy/kubeconfig

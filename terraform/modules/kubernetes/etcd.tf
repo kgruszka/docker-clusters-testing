@@ -1,5 +1,8 @@
 resource "null_resource" "etcd" {
-  depends_on = ["null_resource.kubernetes_manager_tls"]
+  depends_on = [
+    "null_resource.kubernetes_manager_tls",
+    "aws_security_group.kubernetes_etcd"
+  ]
   count = "${var.manager_count}"
 
   connection {

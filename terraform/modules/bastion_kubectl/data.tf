@@ -1,5 +1,5 @@
 data "template_file" "kubernetes_bastion_kubectl" {
-  template = "${file("${path.module}/data/k8s_bastion_kubectl.tpl")}"
+  template = "${file("${path.module}/data/k8s_bastion_kubectl.sh")}"
 
   vars {
     TLS_DIR_PATH = "/home/${var.bastion_user}"

@@ -20,6 +20,7 @@ resource "aws_instance" "kubernetes_worker" {
 resource "null_resource" "kubernetes_worker" {
   depends_on = [
     "null_resource.control_plane",
+    "null_resource.kubernetes_worker_tls",
     "aws_elb.kubernetes_worker",
     "aws_route.kubernetes_pods_routing"
   ]
@@ -34,7 +35,7 @@ resource "null_resource" "kubernetes_worker" {
 
   provisioner "remote-exec" {
     inline = [
-      "mkdir /home/${var.cluster_user}/scripts"
+      "mkdir -p /home/${var.cluster_user}/scripts"
     ]
   }
 
@@ -44,14 +45,14 @@ resource "null_resource" "kubernetes_worker" {
   }
 
   provisioner "file" {
-    content = "${data.template_file.k8s_worker_init.rendered}"
+    content = "${element(data.template_file.k8s_worker_init.*.rendered, count.index)}"
     destination = "/home/${var.cluster_user}/scripts/worker_init.sh"
   }
 
   provisioner "remote-exec" {
     inline = [
       "sudo chmod +x scripts/private_ip_to_hosts_file.sh",
-      "sudo sh scripts/private_ip_to_hosts_file.sh '${element(aws_instance.kubernetes_manager.*.private_ip, count.index)}'"
+      "sudo sh scripts/private_ip_to_hosts_file.sh '${element(aws_instance.kubernetes_worker.*.private_ip, count.index)}'"
     ]
   }
 
@@ -67,5 +68,5 @@ output "worker_private_ips" {
 }
 
 output "kubernetes_workers_provisioned" {
-  value = "${null_resource.kubernetes_worker.id}"
+  value = "${null_resource.kubernetes_worker.*.id}"
 }
