@@ -23,11 +23,26 @@ resource "null_resource" "db_service" {
     inline = [
       "git clone https://github.com/SoftInstigate/restheart.git",
       "cd restheart/Docker",
-      // "docker-compose up -d"
+      "docker-compose up -d && sleep 10",
+      "mkdir -p /home/ubuntu/results",
+      "curl -X PUT -H \"Content-Type: application/json\" -H \"Authorization: Basic ${var.db_auth}\" localhost:${var.db_port}/test"
     ]
   }
 }
 
 output "public_ip" {
+  depends_on = ["null_resource.db_service"]
   value = "${aws_instance.db_service.public_ip}"
+}
+
+output "private_ip" {
+  value = "${aws_instance.db_service.private_ip}"
+}
+
+output "port" {
+  value = "${var.db_port}"
+}
+
+output "auth" {
+  value = "${var.db_auth}"
 }

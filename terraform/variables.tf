@@ -29,14 +29,8 @@ variable "app_tag" {}
 variable "bastion_ami" {}
 variable "bastion_instance_type" {}
 
-// storage
-variable "storage_port" {}
-variable "storage_auth" {}
-variable "storage_path" {}
-
 // TESTS
 
 variable "local_scripts_path" {}
 variable "local_test_dir_path" {}
 variable "test_script_dir" {}
-variable "containers_count" {}

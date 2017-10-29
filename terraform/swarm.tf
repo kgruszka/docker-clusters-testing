@@ -25,8 +25,6 @@ module "swarm" {
   subnet_id = "${module.vpc.cluster_subnet_id}"
 
   local_scripts_path = "${var.local_scripts_path}"
-
-  containers_count = "${var.containers_count}"
 }
 
 output "swarm_manager_public_ips" {

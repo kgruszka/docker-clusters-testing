@@ -48,6 +48,7 @@ resource "null_resource" "bastion" {
 }
 
 output "bastion_public_ip" {
+  depends_on = ["null_resource.bastion"]
   value = "${aws_instance.bastion.public_ip}"
 }
 

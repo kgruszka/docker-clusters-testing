@@ -52,13 +52,9 @@ resource "null_resource" "kubernetes_worker" {
   provisioner "remote-exec" {
     inline = [
       "sudo chmod +x scripts/private_ip_to_hosts_file.sh",
-      "sudo sh scripts/private_ip_to_hosts_file.sh '${element(aws_instance.kubernetes_worker.*.private_ip, count.index)}'"
-    ]
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo sh scripts/worker_init.sh"
+      "sudo sh scripts/private_ip_to_hosts_file.sh '${element(aws_instance.kubernetes_worker.*.private_ip, count.index)}'",
+      "sudo sh scripts/worker_init.sh",
+      "docker pull gcr.io/google_containers/pause-amd64:3.0"
     ]
   }
 }

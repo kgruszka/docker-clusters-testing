@@ -1,11 +1,11 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: system:kube-apiserver
   namespace: ""
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
+  kind: ClusterRole
   name: system:kube-apiserver-to-kubelet
 subjects:
   - apiGroup: rbac.authorization.k8s.io

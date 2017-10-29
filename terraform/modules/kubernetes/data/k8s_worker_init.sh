@@ -12,10 +12,11 @@ sudo apt-get -y install socat
 
 wget -q --show-progress --https-only --timestamping \
   https://github.com/containernetworking/plugins/releases/download/v0.6.0/cni-plugins-amd64-v0.6.0.tgz \
-  https://github.com/kubernetes-incubator/cri-containerd/releases/download/v1.0.0-alpha.0/cri-containerd-1.0.0-alpha.0.tar.gz \
   https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kubectl \
   https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kube-proxy \
   https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kubelet
+
+# https://github.com/kubernetes-incubator/cri-containerd/releases/download/v1.0.0-alpha.0/cri-containerd-1.0.0-alpha.0.tar.gz \
 
 # Create the installation directories
 
@@ -30,7 +31,7 @@ sudo mkdir -p \
 # Install the worker binaries
 
 sudo tar -xvf cni-plugins-amd64-v0.6.0.tgz -C /opt/cni/bin/
-sudo tar -xvf cri-containerd-1.0.0-alpha.0.tar.gz -C /
+#sudo tar -xvf cri-containerd-1.0.0-alpha.0.tar.gz -C /
 
 chmod +x kubectl kube-proxy kubelet
 sudo mv kubectl kube-proxy kubelet /usr/local/bin/
@@ -80,8 +81,6 @@ cat > kubelet.service <<EOF
 [Unit]
 Description=Kubernetes Kubelet
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
-After=cri-containerd.service
-Requires=cri-containerd.service
 
 [Service]
 ExecStart=/usr/local/bin/kubelet \\
@@ -140,5 +139,8 @@ EOF
 
 sudo mv kubelet.service kube-proxy.service /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable containerd cri-containerd kubelet kube-proxy
-sudo systemctl start containerd cri-containerd kubelet kube-proxy
+sudo systemctl enable kubelet kube-proxy
+#sudo systemctl enable containerd cri-containerd kubelet kube-proxy
+sudo systemctl start kubelet kube-proxy && sleep 5
+#sudo systemctl start containerd cri-containerd kubelet kube-proxy
+sudo systemctl restart docker

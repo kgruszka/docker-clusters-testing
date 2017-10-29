@@ -10,12 +10,12 @@ module "kubernetes" {
 
   # manager
   manager_ami = "${var.manager_ami}"
-  manager_instance_type = "t2.micro"
+  manager_instance_type = "${var.master_node_instance_type}"
   manager_count = "${var.master_node_count}"
 
   # worker
   worker_ami = "${var.worker_ami}"
-  worker_instance_type = "t2.micro"
+  worker_instance_type = "${var.slave_node_instance_type}"
   worker_count = "${var.slave_node_count}"
 
   # networking

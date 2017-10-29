@@ -21,5 +21,4 @@ variable "subnet_id" {}
 variable "bastion_public_ip" {}
 
 // test
-variable containers_count {}
 variable local_scripts_path {}

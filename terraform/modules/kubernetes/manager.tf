@@ -83,7 +83,7 @@ resource "null_resource" "control_plane" {
 
   provisioner "remote-exec" {
     inline = [
-      "sleep 15",
+      "sleep 30",
       "kubectl apply -f cluster_role.yml",
       "kubectl apply -f cluster_role_binding.yml"
     ]
